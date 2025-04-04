@@ -33,11 +33,20 @@ describe('WordleBoard', () => {
     expect(wrapper.text()).not.toContain(DEFEAT_MESSAGE)
   })
 
-  test("If a word of the day does not have exactly 5 letters, a warning is displayed", () => {
+  test("If a word of the day does not have exactly 5 letters, a warning is called", async () => {
     // MOCKS THE CONSOLE WARN CALLED MESSAGE (CAN ALSO BE DONE WITH CONSOLE SPY)
     console.warn = vi.fn()
 
     mount(WordleBoard, {props: {wordOfTheDay: "RABBIT"}})
+
+    expect(console.warn).toHaveBeenCalled()
+  })
+
+  test("If a word of the day is not in all uppercase a warning is called", async () => {
+    // MOCKS THE CONSOLE WARN CALLED MESSAGE (CAN ALSO BE DONE WITH CONSOLE SPY)
+    console.warn = vi.fn()
+
+    mount(WordleBoard, {props: {wordOfTheDay: "lower"}})
 
     expect(console.warn).toHaveBeenCalled()
   })
