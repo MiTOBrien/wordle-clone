@@ -2,10 +2,11 @@ import { DOMWrapper, mount, VueWrapper } from '@vue/test-utils'
 import WordleBoard from '../WordleBoard.vue'
 import {VICTORY_MESSAGE, DEFEAT_MESSAGE} from '../../settings'
 
-describe('WordleBoard', () :void => {
+describe('WordleBoard', () => {
+  let wordOfTheDay :string = "TESTS"
   test("A victory message appears when the user make a guess that matches the word of the day", async() => {
     // ARRANGE PHASE
-    const wrapper = mount(WordleBoard, {props: {wordOfTheDay: "TESTS"}})
+    const wrapper = mount(WordleBoard, {props: {wordOfTheDay}})
 
     // ACT PHASE
     const guessInput = wrapper.find("input[type=text]")
@@ -18,7 +19,7 @@ describe('WordleBoard', () :void => {
 
   test("a defeat message appears if the user makes a guess that is incorrect", async() => {
     // ARRANGE PHASE
-    const wrapper = mount(WordleBoard, {props: {wordOfTheDay: "TESTS"}})
+    const wrapper = mount(WordleBoard, {props: {wordOfTheDay}})
 
     // ACT PHASE
     const guessInput = wrapper.find("input[type=text]")
