@@ -34,7 +34,8 @@ describe('WordleBoard', () => {
   })
 
   test("If a word of the day does not have exactly 5 letters, a warning is displayed", () => {
-    vi.spyOn(console, "warn")
+    // MOCKS THE CONSOLE WARN CALLED MESSAGE (CAN ALSO BE DONE WITH CONSOLE SPY)
+    console.warn = vi.fn()
 
     mount(WordleBoard, {props: {wordOfTheDay: "RABBIT"}})
 
