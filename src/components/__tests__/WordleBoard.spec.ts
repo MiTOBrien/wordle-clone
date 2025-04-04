@@ -59,4 +59,13 @@ describe('WordleBoard', () => {
 
     expect(console.warn).toHaveBeenCalled()
   })
+
+  test("No warning is called if the word of the day is a valid 5 letter uppercase word", async () => {
+    // MOCKS THE CONSOLE WARN CALLED MESSAGE (CAN ALSO BE DONE WITH CONSOLE SPY)
+    console.warn = vi.fn()
+
+    mount(WordleBoard, {props: {wordOfTheDay: "CRACK"}})
+
+    expect(console.warn).not.toHaveBeenCalled()
+  })
 })
