@@ -35,30 +35,19 @@ describe('WordleBoard', () => {
     })
   })
 
-  describe("Word of the day validations", () => {
-    test("If a word of the day does not have exactly 5 letters, a warning is called", async () => {
+  describe("Word of the day validation tests for a word that is not 5 letters, in lowercase, or not a valid word", () => {
+    test.each(
+      [
+        "RABBIT",
+        "FLY",
+        "lower",
+        "QWERT",
+      ]
+    )("If '%s' is provided a warning is called", async (wordOfTheDay) => {
       // MOCKS THE CONSOLE WARN CALLED MESSAGE (CAN ALSO BE DONE WITH CONSOLE SPY)
       console.warn = vi.fn()
   
-      mount(WordleBoard, {props: {wordOfTheDay: "RABBIT"}})
-  
-      expect(console.warn).toHaveBeenCalled()
-    })
-  
-    test("If a word of the day is not in all uppercase a warning is called", async () => {
-      // MOCKS THE CONSOLE WARN CALLED MESSAGE (CAN ALSO BE DONE WITH CONSOLE SPY)
-      console.warn = vi.fn()
-  
-      mount(WordleBoard, {props: {wordOfTheDay: "lower"}})
-  
-      expect(console.warn).toHaveBeenCalled()
-    })
-  
-    test("If a word of the day is not a real word a warning is called", async () => {
-      // MOCKS THE CONSOLE WARN CALLED MESSAGE (CAN ALSO BE DONE WITH CONSOLE SPY)
-      console.warn = vi.fn()
-  
-      mount(WordleBoard, {props: {wordOfTheDay: "QWERT"}})
+      mount(WordleBoard, {props: {wordOfTheDay: wordOfTheDay}})
   
       expect(console.warn).toHaveBeenCalled()
     })
