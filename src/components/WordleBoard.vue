@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed, ref, triggerRef } from 'vue'
-import { VICTORY_MESSAGE, DEFEAT_MESSAGE, WORD_SIZE } from '@/settings'
+import { ref } from 'vue'
+import { VICTORY_MESSAGE, DEFEAT_MESSAGE } from '@/settings'
+import GuessInput from './GuessInput.vue'
 import englishWords from '@/englishWordsWith5Letters.json'
 
 defineProps({
@@ -10,41 +11,11 @@ defineProps({
   },
 })
 
-const guessInProgress = ref<string | null>(null)
 const guessSubmitted = ref('')
-
-const formattedGuessInProgress = computed<string>({
-  get() {
-    return guessInProgress.value ?? ''
-  },
-  set(rawValue: string) {
-    guessInProgress.value = null
-
-    guessInProgress.value = rawValue
-      .slice(0, WORD_SIZE)
-      .toUpperCase()
-      .replace(/[^A-Z]+/gi, '')
-
-    triggerRef(formattedGuessInProgress)
-  },
-})
-
-function onSubmit() {
-  if (!englishWords.includes(formattedGuessInProgress.value)) {
-    return
-  }
-
-  guessSubmitted.value = formattedGuessInProgress.value
-}
 </script>
 
 <template>
-  <input
-    type="text"
-    v-model="formattedGuessInProgress"
-    maxlength="WORD_SIZE"
-    @keydown.enter="onSubmit"
-  />
+  <guess-input @guess-submitted="(guess) => (guessSubmitted = guess)" />
   <p
     v-if="guessSubmitted.length > 0"
     v-text="guessSubmitted === wordOfTheDay ? VICTORY_MESSAGE : DEFEAT_MESSAGE"
