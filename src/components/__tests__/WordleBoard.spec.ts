@@ -1,6 +1,6 @@
 import { DOMWrapper, mount, VueWrapper } from '@vue/test-utils'
 import WordleBoard from '../WordleBoard.vue'
-import { VICTORY_MESSAGE, DEFEAT_MESSAGE } from '../../settings'
+import { VICTORY_MESSAGE, DEFEAT_MESSAGE, WORD_SIZE } from '../../settings'
 
 describe('WordleBoard', () => {
   let wordOfTheDay: string = 'TESTS'
@@ -40,17 +40,17 @@ describe('WordleBoard', () => {
     })
 
     test.each([
-      { wordOfTheDay: 'RABBIT', reason: 'is longer than 5 letters' },
-      { wordOfTheDay: 'FLY', reason: 'is shorter than 5 letters' },
+      { wordOfTheDay: 'RABBIT', reason: `is longer than ${WORD_SIZE} letters` },
+      { wordOfTheDay: 'FLY', reason: `is shorter than ${WORD_SIZE} letters` },
       { wordOfTheDay: 'lower', reason: 'is lowercase letters' },
-      { wordOfTheDay: 'QWERT', reason: 'is not a valid 5 letter word' },
+      { wordOfTheDay: 'QWERT', reason: `is not a valid ${WORD_SIZE} letter word` },
     ])('Since $wordOfTheDay $reason a warning is called', async ({ wordOfTheDay }) => {
       mount(WordleBoard, { props: { wordOfTheDay } })
 
       expect(console.warn).toHaveBeenCalled()
     })
 
-    test('No warning is called if the word of the day is a valid 5 letter uppercase word', async () => {
+    test(`No warning is called if the word of the day is a valid ${WORD_SIZE} letter uppercase word`, async () => {
       mount(WordleBoard, { props: { wordOfTheDay: 'CRACK' } })
 
       expect(console.warn).not.toHaveBeenCalled()
@@ -58,7 +58,11 @@ describe('WordleBoard', () => {
   })
 
   describe('Player input validations', () => {
-    test('Player input is exactly 5 letters', () => {})
+    test(`Player input is limited to ${WORD_SIZE} letters`, async () => {
+      await playerSubmitsGuess(wordOfTheDay + 'EXTRA')
+
+      expect(wrapper.text()).toContain(VICTORY_MESSAGE)
+    })
 
     test.todo('Player guesses can only be submitted if they are real words')
     test.todo('Players guesses are not case sensitive')
