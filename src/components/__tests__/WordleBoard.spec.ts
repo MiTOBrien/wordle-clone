@@ -71,7 +71,12 @@ describe('WordleBoard', () => {
       expect(wrapper.text()).not.toContain(DEFEAT_MESSAGE)
     })
 
-    test.todo('Players guesses are not case sensitive')
-    test.todo('Player guesses can only contian letters')
+    test('Players guesses are not case sensitive', async () => {
+      await playerSubmitsGuess(wordOfTheDay.toLocaleLowerCase())
+
+      expect(wrapper.text()).toContain(VICTORY_MESSAGE)
+    })
+
+    test.todo('Player guesses can only contian letters', async () => {})
   })
 })
