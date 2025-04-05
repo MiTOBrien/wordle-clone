@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, triggerRef } from 'vue'
 import { VICTORY_MESSAGE, DEFEAT_MESSAGE, WORD_SIZE } from '@/settings'
 import englishWords from '@/englishWordsWith5Letters.json'
 
@@ -10,27 +10,31 @@ defineProps({
   },
 })
 
-const guessInProgress = ref('')
+const guessInProgress = ref<string | null>(null)
 const guessSubmitted = ref('')
 
-const formattedGuessInProgress = computed({
+const formattedGuessInProgress = computed<string>({
   get() {
-    return guessInProgress.value
+    return guessInProgress.value ?? ''
   },
   set(rawValue: string) {
+    guessInProgress.value = null
+
     guessInProgress.value = rawValue
       .slice(0, WORD_SIZE)
       .toUpperCase()
       .replace(/[^A-Z]+/gi, '')
+
+    triggerRef(formattedGuessInProgress)
   },
 })
 
 function onSubmit() {
-  if (!englishWords.includes(guessInProgress.value)) {
+  if (!englishWords.includes(formattedGuessInProgress.value)) {
     return
   }
 
-  guessSubmitted.value = guessInProgress.value
+  guessSubmitted.value = formattedGuessInProgress.value
 }
 </script>
 

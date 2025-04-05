@@ -1,6 +1,7 @@
 import { DOMWrapper, mount, VueWrapper } from '@vue/test-utils'
 import WordleBoard from '../WordleBoard.vue'
 import { VICTORY_MESSAGE, DEFEAT_MESSAGE, WORD_SIZE } from '../../settings'
+import { nextTick } from 'process'
 
 describe('WordleBoard', () => {
   let wordOfTheDay: string = 'TESTS'
@@ -81,6 +82,13 @@ describe('WordleBoard', () => {
       await playerSubmitsGuess('WR!T3')
 
       expect(wrapper.find<HTMLInputElement>('input[type=text]').element.value).toEqual('WRT')
+    })
+
+    test('Confirm non-letter characters do not render on the screen while being typed', async () => {
+      await playerSubmitsGuess('12')
+      await playerSubmitsGuess('123')
+
+      expect(wrapper.find<HTMLInputElement>('input[type=text]').element.value).toEqual('')
     })
   })
 })
