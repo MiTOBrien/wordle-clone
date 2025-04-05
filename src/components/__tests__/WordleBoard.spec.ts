@@ -77,6 +77,10 @@ describe('WordleBoard', () => {
       expect(wrapper.text()).toContain(VICTORY_MESSAGE)
     })
 
-    test.todo('Player guesses can only contian letters', async () => {})
+    test('Player guesses can only contian letters', async () => {
+      await playerSubmitsGuess('WR!T3')
+
+      expect(wrapper.find<HTMLInputElement>('input[type=text]').element.value).toEqual('WRT')
+    })
   })
 })
