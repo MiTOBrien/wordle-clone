@@ -119,6 +119,12 @@ describe('WordleBoard', () => {
       await wrapper.find('input[type=text]').trigger('blur')
       expect(document.activeElement).toBe(wrapper.find('input[type=text]').element)
     })
+
+    test('Player input gets cleared after submission', async () => {
+      await playerSubmitsGuess("WRONG")
+
+      expect(wrapper.find<HTMLInputElement>("input[type=text").element.value).toEqual("")
+    })
   })
 
   test('All previous guess are visible on the page', async () => {
