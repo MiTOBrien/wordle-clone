@@ -120,4 +120,23 @@ describe('WordleBoard', () => {
       expect(document.activeElement).toBe(wrapper.find('input[type=text]').element)
     })
   })
+
+  test('All previous guess are visible on the page', async () => {
+    const guesses = [
+      "WRONG",
+      "GUESS",
+      "CODER",
+      "HAPPY",
+      "WORLD",
+      "HELLO"
+    ]
+
+    for (const guess of guesses) {
+      await playerSubmitsGuess(guess)
+    }
+
+    for (const guess of guesses) {
+      expect(wrapper.text()).toContain(guess)
+    }
+  })
 })
