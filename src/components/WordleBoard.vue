@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import { VICTORY_MESSAGE, DEFEAT_MESSAGE, MAX_GUESSES_COUNT } from '@/settings'
 import GuessInput from './GuessInput.vue'
+import GuessView from './GuessView.vue'
 import englishWords from '@/englishWordsWith5Letters.json'
 
 const props = defineProps({
@@ -26,7 +27,7 @@ const isGameOver = computed(
     <h1 class="word-guess">WORD GUESS</h1>
     <ul>
       <li v-for="(guess, index) in guessesSubmitted" :key="`${index}-${guess}`">
-        {{ guess }}
+        <guess-view :guess="guess" />
       </li>
     </ul>
     <guess-input @guess-submitted="(guess) => guessesSubmitted.push(guess)" />
@@ -44,6 +45,16 @@ main {
   flex-direction: column;
   align-items: center;
   margin-top: 3rem;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 0.25rem;
 }
 
 .word-guess {
