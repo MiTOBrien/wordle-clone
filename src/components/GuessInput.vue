@@ -86,5 +86,9 @@ input {
   50% {
     transform: translateX(2%);
   }
+
+  75% {
+    transform: translateX(0);
+  }
 }
 </style>
