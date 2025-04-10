@@ -10,7 +10,15 @@ function getFeedback(letterPostion: number): null | 'correct' | 'incorrect' | 'a
     return null
   }
 
-  return props.answer[letterPostion] === props.guess[letterPostion] ? 'correct' : 'incorrect'
+  const letterGuessed = props.guess[letterPostion]
+  const letterExpected = props.answer[letterPostion]
+
+  props.guess[letterPostion]
+  if (!props.answer.includes(letterGuessed)) {
+    return 'incorrect'
+  }
+
+  return letterExpected === letterGuessed ? 'correct' : 'almost'
 }
 </script>
 
