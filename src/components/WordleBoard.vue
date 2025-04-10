@@ -33,7 +33,7 @@ const countOfEmptyGuesses = computed(() => {
     <h1 class="word-guess">WORD GUESS</h1>
     <ul>
       <li v-for="(guess, index) in guessesSubmitted" :key="`${index}-${guess}`">
-        <guess-view :guess="guess" should-flip />
+        <guess-view :guess="guess" :answer="wordOfTheDay" />
       </li>
       <li>
         <guess-input

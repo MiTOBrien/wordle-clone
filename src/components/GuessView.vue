@@ -3,7 +3,15 @@ import { computed, ref, triggerRef } from 'vue'
 import { WORD_SIZE } from '@/settings'
 import englishWords from '@/englishWordsWith5Letters.json'
 
-withDefaults(defineProps<{ guess: string; shouldFlip?: boolean }>(), { shouldFlip: false })
+const props = defineProps<{ guess: string; answer?: string }>()
+
+function getFeedback(letterPostion: number): null | 'correct' | 'incorrect' | 'almost' {
+  if (!props.answer) {
+    return null
+  }
+
+  return props.answer[letterPostion] === props.guess[letterPostion] ? 'correct' : 'incorrect'
+}
 </script>
 
 <template>
@@ -12,7 +20,8 @@ withDefaults(defineProps<{ guess: string; shouldFlip?: boolean }>(), { shouldFli
       v-for="(letter, index) in guess.padEnd(WORD_SIZE, ' ')"
       :key="`${letter}-${index}`"
       :data-letter="letter"
-      :class="{ 'with-flips': shouldFlip }"
+      :data-letter-feedback="getFeedback(index)"
+      :class="{ 'with-flips': answer }"
       class="letter"
       v-text="letter"
     />
