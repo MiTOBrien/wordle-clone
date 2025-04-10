@@ -24,26 +24,29 @@ describe('WordleBoard', () => {
     })
 
     describe.each([
-      {numberOfGuesses: 0, shouldSeeDefeatMessage: false},
-      {numberOfGuesses: 1, shouldSeeDefeatMessage: false},
-      {numberOfGuesses: 2, shouldSeeDefeatMessage: false},
-      {numberOfGuesses: 3, shouldSeeDefeatMessage: false},
-      {numberOfGuesses: 4, shouldSeeDefeatMessage: false},
-      {numberOfGuesses: 5, shouldSeeDefeatMessage: false},
-      {numberOfGuesses: MAX_GUESSES_COUNT, shouldSeeDefeatMessage: true},
-    ])(`A defeat message should appear if the player makes an incorrect guess ${MAX_GUESSES_COUNT} times in a row`, ({numberOfGuesses, shouldSeeDefeatMessage}) => {
-      test(`therefore for ${numberOfGuesses} guess(es), a defeat message should ${shouldSeeDefeatMessage? "" : "not"} appear`, async () => {
-        for (let i = 0; i < numberOfGuesses; i++) {
-          await playerSubmitsGuess("WRONG")
-        }
+      { numberOfGuesses: 0, shouldSeeDefeatMessage: false },
+      { numberOfGuesses: 1, shouldSeeDefeatMessage: false },
+      { numberOfGuesses: 2, shouldSeeDefeatMessage: false },
+      { numberOfGuesses: 3, shouldSeeDefeatMessage: false },
+      { numberOfGuesses: 4, shouldSeeDefeatMessage: false },
+      { numberOfGuesses: 5, shouldSeeDefeatMessage: false },
+      { numberOfGuesses: MAX_GUESSES_COUNT, shouldSeeDefeatMessage: true },
+    ])(
+      `A defeat message should appear if the player makes an incorrect guess ${MAX_GUESSES_COUNT} times in a row`,
+      ({ numberOfGuesses, shouldSeeDefeatMessage }) => {
+        test(`therefore for ${numberOfGuesses} guess(es), a defeat message should ${shouldSeeDefeatMessage ? '' : 'not'} appear`, async () => {
+          for (let i = 0; i < numberOfGuesses; i++) {
+            await playerSubmitsGuess('WRONG')
+          }
 
-        if (shouldSeeDefeatMessage) {
-          expect(wrapper.text()).toContain(DEFEAT_MESSAGE)
-        } else {
-          expect(wrapper.text()).not.toContain(DEFEAT_MESSAGE)
-        }
-      })
-    })
+          if (shouldSeeDefeatMessage) {
+            expect(wrapper.text()).toContain(DEFEAT_MESSAGE)
+          } else {
+            expect(wrapper.text()).not.toContain(DEFEAT_MESSAGE)
+          }
+        })
+      },
+    )
 
     test('No end-of-game message appears if the user has not yet made a guess', async () => {
       expect(wrapper.text()).not.toContain(VICTORY_MESSAGE)
@@ -121,21 +124,32 @@ describe('WordleBoard', () => {
     })
 
     test('Player input gets cleared after submission', async () => {
-      await playerSubmitsGuess("WRONG")
+      await playerSubmitsGuess('WRONG')
 
-      expect(wrapper.find<HTMLInputElement>("input[type=text").element.value).toEqual("")
+      expect(wrapper.find<HTMLInputElement>('input[type=text').element.value).toEqual('')
+    })
+
+    test('Controls are disabled after games is over - won or lost', async () => {})
+
+    test('Player controls are disabled after max number of wrong guesses,', async () => {
+      const guesses = ['WRONG', 'GUESS', 'CODER', 'HAPPY', 'WORLD', 'THREE']
+
+      for (const guess of guesses) {
+        await playerSubmitsGuess(guess)
+      }
+
+      expect(wrapper.find('input[type=text').attributes('disabled')).not.toBeUndefined()
+    })
+
+    test('Player controls are disabled after correct guess is made', async () => {
+      await playerSubmitsGuess(wordOfTheDay)
+
+      expect(wrapper.find('input[type=text').attributes('disabled')).not.toBeUndefined()
     })
   })
 
   test('All previous guess are visible on the page', async () => {
-    const guesses = [
-      "WRONG",
-      "GUESS",
-      "CODER",
-      "HAPPY",
-      "WORLD",
-      "HELLO"
-    ]
+    const guesses = ['WRONG', 'GUESS', 'CODER', 'HAPPY', 'WORLD', 'HELLO']
 
     for (const guess of guesses) {
       await playerSubmitsGuess(guess)
