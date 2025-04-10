@@ -107,14 +107,14 @@ describe('WordleBoard', () => {
     })
 
     test('Player guesses can only contian letters', async () => {
-      await playerTypesAndSubmitsGuess('WR!T3')
+      await playerTypesGuess('WR!T3')
 
       expect(wrapper.find<HTMLInputElement>('input[type=text]').element.value).toEqual('WRT')
     })
 
     test('Confirm non-letter characters do not render on the screen while being typed', async () => {
-      await playerTypesAndSubmitsGuess('12')
-      await playerTypesAndSubmitsGuess('123')
+      await playerTypesGuess('12')
+      await playerTypesGuess('123')
 
       expect(wrapper.find<HTMLInputElement>('input[type=text]').element.value).toEqual('')
     })
